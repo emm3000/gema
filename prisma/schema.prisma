@@ -22,13 +22,13 @@ enum AttendanceStatus {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  school       String?
-  level        String?
-  courses      Course[] // relación 1:N con Course
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  school   String?
+  level    String?
+  courses  Course[] // relación 1:N con Course
 }
 
 model Course {
