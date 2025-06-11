@@ -14,83 +14,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum EducationLevel {
-  Primary
-  Secondary
-}
-
-enum Shift {
-  Morning
-  Afternoon
-}
-
-enum Gender {
-  Male
-  Female
-  Other
-}
-
 enum AttendanceStatus {
-  Present
-  Absent
-  Late
-  Excused
-}
-
-enum EvaluationType {
-  EXAM
-  ASSIGNMENT
-  PROJECT
-  QUIZ
-  PRESENTATION
-}
-
-enum Term {
-  I
-  II
-  III
-  IV
+  PRESENT
+  ABSENT
+  LATE
+  JUSTIFIED
 }
 
 model User {
-  id              String   @id @default(uuid())
-  name            String
-  email           String   @unique
-  password        String
-  institutionName String
-  teachingLevel   String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  course          Course[]
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  school       String?
+  level        String?
+  courses      Course[] // relación 1:N con Course
 }
 
 model Course {
-  id             String         @id @default(uuid())
-  name           String
-  schooldGrade   String
-  section        String
-  educationLevel EducationLevel
-  shift          Shift?
-  academicYear   Int            @default(2025)
-  teacherId      String
-  teacher        User           @relation(fields: [teacherId], references: [id])
-  attendance     Attendance[]
-  evaluation     Evaluation[]
-  student        Student[]
-  studentId      String?
+  id           String    @id @default(uuid())
+  name         String
+  grade        String
+  section      String
+  level        String
+  shift        String?
+  academicYear Int       @default(2025)
+  teacherId    String
+  teacher      User      @relation(fields: [teacherId], references: [id])
+  student      Student[]
+
+  attendance Attendance[]
+  evaluation Evaluation[]
 }
 
 model Student {
-  id             String       @id @default(uuid())
-  fullName       String
-  enrollmentCode String? // DNI o código de matrícula (opcional)
-  email          String? // Correo del alumno o tutor (opcional)
-  birthDate      DateTime? // Fecha de nacimiento (opcional)
-  gender         Gender? // Opcional: enum definido abajo
-  attendance     Attendance[]
-  course         Course[]
-
-  evaluationResult EvaluationResult[]
+  id         String       @id @default(uuid())
+  fullName   String
+  dni        String?      @unique // DNI o código de matrícula (opcional)
+  email      String?      @unique // Correo del alumno o tutor (opcional)
+  birthDate  DateTime?
+  gender     String?
+  course     Course[]
+  attendance Attendance[]
+  grades     Grade[]
 }
 
 model Attendance {
@@ -104,22 +70,21 @@ model Attendance {
 }
 
 model Evaluation {
-  id             String         @id @default(uuid())
-  title          String // Nombre de la evaluación
-  date           DateTime // Fecha de evaluación
-  maxScore       Int // Puntaje máximo, ej: 20
-  evaluationType EvaluationType // Examen, Tarea, etc.
-  term           Term? // Opcional: I, II, III, IV
-  courseId       String
-  course         Course         @relation(fields: [courseId], references: [id])
-
-  evaluationResult EvaluationResult[]
+  id               String   @id @default(uuid())
+  name             String
+  date             DateTime
+  maxScore         Int
+  type             String
+  term             String?
+  courseId         String
+  course           Course   @relation(fields: [courseId], references: [id])
+  evaluationResult Grade[]
 }
 
-model EvaluationResult {
+model Grade {
   id           String     @id @default(uuid())
-  score        Int // Puntaje obtenido
-  observation  String? // Comentario opcional
+  score        Float
+  observation  String?
   studentId    String
   evaluationId String
   student      Student    @relation(fields: [studentId], references: [id])
