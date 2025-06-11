@@ -61,7 +61,7 @@ model User {
   teachingLevel   String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-  Course          Course[]
+  course          Course[]
 }
 
 model Course {
@@ -74,8 +74,10 @@ model Course {
   academicYear   Int            @default(2025)
   teacherId      String
   teacher        User           @relation(fields: [teacherId], references: [id])
-  Attendance     Attendance[]
-  Evaluation     Evaluation[]
+  attendance     Attendance[]
+  evaluation     Evaluation[]
+  student        Student[]
+  studentId      String?
 }
 
 model Student {
@@ -85,9 +87,10 @@ model Student {
   email          String? // Correo del alumno o tutor (opcional)
   birthDate      DateTime? // Fecha de nacimiento (opcional)
   gender         Gender? // Opcional: enum definido abajo
-  Attendance     Attendance[]
+  attendance     Attendance[]
+  course         Course[]
 
-  EvaluationResult EvaluationResult[]
+  evaluationResult EvaluationResult[]
 }
 
 model Attendance {
@@ -110,7 +113,7 @@ model Evaluation {
   courseId       String
   course         Course         @relation(fields: [courseId], references: [id])
 
-  EvaluationResult EvaluationResult[]
+  evaluationResult EvaluationResult[]
 }
 
 model EvaluationResult {
