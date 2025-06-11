@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EducationLevel {
+  Primary
+  Secondary
+}
+
+enum Shift {
+  Morning
+  Afternoon
+}
+
+enum Gender {
+  Male
+  Female
+  Other
+}
+
+enum AttendanceStatus {
+  Present
+  Absent
+  Late
+  Excused
+}
+
+enum EvaluationType {
+  EXAM
+  ASSIGNMENT
+  PROJECT
+  QUIZ
+  PRESENTATION
+}
+
+enum Term {
+  I
+  II
+  III
+  IV
+}
+
+model User {
+  id              String   @id @default(uuid())
+  name            String
+  email           String   @unique
+  password        String
+  institutionName String
+  teachingLevel   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  Course          Course[]
+}
+
+model Course {
+  id             String         @id @default(uuid())
+  name           String
+  schooldGrade   String
+  section        String
+  educationLevel EducationLevel
+  shift          Shift?
+  academicYear   Int            @default(2025)
+  teacherId      String
+  teacher        User           @relation(fields: [teacherId], references: [id])
+  Attendance     Attendance[]
+  Evaluation     Evaluation[]
+}
+
+model Student {
+  id             String       @id @default(uuid())
+  fullName       String
+  enrollmentCode String? // DNI o código de matrícula (opcional)
+  email          String? // Correo del alumno o tutor (opcional)
+  birthDate      DateTime? // Fecha de nacimiento (opcional)
+  gender         Gender? // Opcional: enum definido abajo
+  Attendance     Attendance[]
+
+  EvaluationResult EvaluationResult[]
+}
+
+model Attendance {
+  id        String           @id @default(uuid())
+  date      DateTime
+  status    AttendanceStatus
+  studentId String
+  courseId  String
+  student   Student          @relation(fields: [studentId], references: [id])
+  course    Course           @relation(fields: [courseId], references: [id])
+}
+
+model Evaluation {
+  id             String         @id @default(uuid())
+  title          String // Nombre de la evaluación
+  date           DateTime // Fecha de evaluación
+  maxScore       Int // Puntaje máximo, ej: 20
+  evaluationType EvaluationType // Examen, Tarea, etc.
+  term           Term? // Opcional: I, II, III, IV
+  courseId       String
+  course         Course         @relation(fields: [courseId], references: [id])
+
+  EvaluationResult EvaluationResult[]
+}
+
+model EvaluationResult {
+  id           String     @id @default(uuid())
+  score        Int // Puntaje obtenido
+  observation  String? // Comentario opcional
+  studentId    String
+  evaluationId String
+  student      Student    @relation(fields: [studentId], references: [id])
+  evaluation   Evaluation @relation(fields: [evaluationId], references: [id])
+}
