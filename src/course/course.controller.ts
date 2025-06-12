@@ -48,4 +48,12 @@ export class CourseController {
   async remove(@Param('id') id: string): Promise<Course> {
     return await this.courseService.remove(id)
   }
+
+  @Post(':courseId/student')
+  async addStudent(
+    @Param('courseId') courseId: string,
+    @Body() studentIds: string[],
+  ): Promise<Course> {
+    return await this.courseService.addStudent(courseId, studentIds)
+  }
 }

@@ -9,7 +9,7 @@ import { Course } from 'generated/prisma'
 export class CourseService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(user: User, createCourseDto: CreateCourseDto): Promise<Course> {
+  create(user: User, createCourseDto: CreateCourseDto): Promise<Course> {
     return this.prisma.course.create({
       data: {
         name: createCourseDto.name,
@@ -23,22 +23,41 @@ export class CourseService {
     })
   }
 
-  async findAll(): Promise<Course[]> {
+  findAll(): Promise<Course[]> {
     return this.prisma.course.findMany()
   }
 
-  async findOne(id: string): Promise<Course> {
-    return this.prisma.course.findUnique({ where: { id } })
+  findOne(id: string): Promise<Course> {
+    return this.prisma.course.findUnique({
+      where: { id },
+      include: {
+        student: true,
+      },
+    })
   }
 
-  async update(id: string, updateCourseDto: UpdateCourseDto): Promise<Course> {
+  update(id: string, updateCourseDto: UpdateCourseDto): Promise<Course> {
     return this.prisma.course.update({
       where: { id },
       data: updateCourseDto,
+      include: {
+        student: true,
+      },
     })
   }
 
   remove(id: string): Promise<Course> {
     return this.prisma.course.delete({ where: { id } })
+  }
+
+  addStudent(courseId: string, studentIds: string[]): Promise<Course> {
+    return this.prisma.course.update({
+      where: { id: courseId },
+      data: {
+        student: {
+          connect: studentIds.map((id) => ({ id })),
+        },
+      },
+    })
   }
 }

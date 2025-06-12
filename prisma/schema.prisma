@@ -53,7 +53,7 @@ model Student {
   fullName   String
   dni        String?      @unique // DNI o código de matrícula (opcional)
   email      String?      @unique // Correo del alumno o tutor (opcional)
-  birthDate  DateTime?
+  birthDate  DateTime?    @db.Date
   gender     String?
   course     Course[]
   attendance Attendance[]
