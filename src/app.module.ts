@@ -12,7 +12,6 @@ import { JwtGuard } from './auth/jwt.guard'
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env.local',
     }),
     UsersModule,
     AuthModule,
