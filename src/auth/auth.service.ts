@@ -40,8 +40,7 @@ export class AuthService {
       throw new BadRequestException('User already exists')
     }
 
-    const hashedPassword: string = bcrypt.hashSync(user.password, 10)
-    user.password = hashedPassword
+    user.password = bcrypt.hashSync(user.password, 10)
 
     const newUser: User = await this.userService.create(user)
     return this.login(newUser)

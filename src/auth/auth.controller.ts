@@ -10,12 +10,12 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() body: CreateUserDto) {
-    return this.authService.register(body)
+    return await this.authService.register(body)
   }
 
   @Post('login')
   async login(@Body() body: Omit<CreateUserDto, 'name'>) {
     const user = await this.authService.validateUser(body.email, body.password)
-    return this.authService.login(user)
+    return await this.authService.login(user)
   }
 }

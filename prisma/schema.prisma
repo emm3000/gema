@@ -41,7 +41,7 @@ model Course {
   shift        String?
   academicYear Int       @default(2025)
   teacherId    String
-  teacher      User      @relation(fields: [teacherId], references: [id])
+  teacher      User      @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   student      Student[]
 
   attendance Attendance[]
@@ -66,8 +66,8 @@ model Attendance {
   status    AttendanceStatus
   studentId String
   courseId  String
-  student   Student          @relation(fields: [studentId], references: [id])
-  course    Course           @relation(fields: [courseId], references: [id])
+  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course    Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model Evaluation {
@@ -78,7 +78,7 @@ model Evaluation {
   type             String
   term             String?
   courseId         String
-  course           Course   @relation(fields: [courseId], references: [id])
+  course           Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   evaluationResult Grade[]
 }
 
@@ -88,6 +88,6 @@ model Grade {
   observation  String?
   studentId    String
   evaluationId String
-  student      Student    @relation(fields: [studentId], references: [id])
-  evaluation   Evaluation @relation(fields: [evaluationId], references: [id])
+  student      Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  evaluation   Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
 }
