@@ -1,14 +1,14 @@
 import { Controller, Get } from '@nestjs/common'
 import { AppService } from './app.service'
-import { CurrentUser } from 'src/auth/user.decorator'
+import { Public } from 'src/auth/public.decorator'
 
 @Controller()
+@Public()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(@CurrentUser() user: object): string {
-    console.log(user)
-    return this.appService.getHello()
+  health(): string {
+    return this.appService.health()
   }
 }
