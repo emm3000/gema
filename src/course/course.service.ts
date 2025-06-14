@@ -23,8 +23,12 @@ export class CourseService {
     })
   }
 
-  findAll(): Promise<Course[]> {
-    return this.prisma.course.findMany()
+  findAll(user: User): Promise<Course[]> {
+    return this.prisma.course.findMany({
+      where: {
+        teacherId: user.id,
+      },
+    })
   }
 
   findOne(id: string): Promise<Course> {

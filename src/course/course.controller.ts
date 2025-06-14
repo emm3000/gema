@@ -27,8 +27,8 @@ export class CourseController {
   }
 
   @Get()
-  async findAll(): Promise<Course[]> {
-    return await this.courseService.findAll()
+  async findAll(@CurrentUser() user: User): Promise<Course[]> {
+    return await this.courseService.findAll(user)
   }
 
   @Get(':id')
