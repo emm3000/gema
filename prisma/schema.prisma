@@ -62,12 +62,14 @@ model Student {
 
 model Attendance {
   id        String           @id @default(uuid())
-  date      DateTime
+  date      DateTime         @db.Date
   status    AttendanceStatus
   studentId String
   courseId  String
   student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
   course    Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([date, studentId, courseId])
 }
 
 model Evaluation {

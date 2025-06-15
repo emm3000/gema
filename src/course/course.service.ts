@@ -28,6 +28,9 @@ export class CourseService {
       where: {
         teacherId: user.id,
       },
+      include: {
+        student: true,
+      },
     })
   }
 

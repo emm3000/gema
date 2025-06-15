@@ -6,11 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common'
 import { AttendanceService } from './attendance.service'
 import { CreateAttendanceDto } from './dto/create-attendance.dto'
 import { UpdateAttendanceDto } from './dto/update-attendance.dto'
-import { Attendance } from 'generated/prisma'
+import { Attendance, Student } from 'generated/prisma'
 
 @Controller('attendance')
 export class AttendanceController {
@@ -51,5 +52,13 @@ export class AttendanceController {
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<Attendance> {
     return await this.attendanceService.remove(id)
+  }
+
+  @Get('course/:courseId')
+  async findByCourseId(
+    @Param('courseId') courseId: string,
+    @Query('date') date: string,
+  ): Promise<{ student: Student; status: string }[]> {
+    return await this.attendanceService.findByCourseId(courseId, date)
   }
 }

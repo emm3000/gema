@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { CreateAttendanceDto } from './dto/create-attendance.dto'
 import { UpdateAttendanceDto } from './dto/update-attendance.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { Attendance, AttendanceStatus } from 'generated/prisma'
+import { Attendance, AttendanceStatus, Student } from 'generated/prisma'
 
 @Injectable()
 export class AttendanceService {
@@ -55,5 +55,36 @@ export class AttendanceService {
 
   remove(id: string): Promise<Attendance> {
     return this.prisma.attendance.delete({ where: { id } })
+  }
+
+  async findByCourseId(
+    courseId: string,
+    date: string,
+  ): Promise<{ student: Student; status: string }[]> {
+    const students = await this.prisma.student.findMany({
+      where: {
+        course: {
+          some: {
+            id: courseId,
+          },
+        },
+      },
+    })
+    const attendance = await this.prisma.attendance.findMany({
+      where: {
+        courseId,
+        date: new Date(date),
+      },
+    })
+
+    const attendanceMap = new Map<string, Attendance>()
+    attendance.forEach((attendance) => {
+      attendanceMap.set(attendance.studentId, attendance)
+    })
+
+    return students.map((student) => ({
+      student,
+      status: attendanceMap.get(student.id)?.status ?? AttendanceStatus.ABSENT,
+    }))
   }
 }
