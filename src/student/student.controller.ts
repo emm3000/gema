@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common'
 import { StudentService } from './student.service'
 import { CreateStudentDto } from './dto/create-student.dto'
@@ -50,5 +52,16 @@ export class StudentController {
     @Body() courseIds: string[],
   ): Promise<Student> {
     return await this.studentService.addCourse(studentId, courseIds)
+  }
+
+  @Post('create-student-with-course')
+  async createStudentWithCourse(
+    @Body() createStudentDto: CreateStudentDto,
+  ): Promise<Student> {
+    try {
+      return await this.studentService.createStudentWithCourse(createStudentDto)
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+    }
   }
 }

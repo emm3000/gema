@@ -52,4 +52,23 @@ export class StudentService {
       },
     })
   }
+
+  createStudentWithCourse(
+    createStudentDto: CreateStudentDto,
+  ): Promise<Student> {
+    return this.prisma.student.create({
+      data: {
+        fullName: createStudentDto.fullName,
+        dni: createStudentDto.dni,
+        email: createStudentDto.email,
+        gender: createStudentDto.gender,
+        course: {
+          connect: createStudentDto.coursesId.map((id) => ({ id })),
+        },
+      },
+      include: {
+        course: true,
+      },
+    })
+  }
 }

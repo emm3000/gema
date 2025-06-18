@@ -4,4 +4,5 @@ export class CreateStudentDto {
   readonly email: string | null
   readonly birthDate: string | null
   readonly gender: string | null
+  readonly coursesId: string[]
 }
