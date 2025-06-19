@@ -13,6 +13,8 @@ import { StudentService } from './student.service'
 import { CreateStudentDto } from './dto/create-student.dto'
 import { UpdateStudentDto } from './dto/update-student.dto'
 import { Student } from 'generated/prisma'
+import { CurrentUser } from 'src/auth/user.decorator'
+import { User } from 'src/users/entities/user.entity'
 
 @Controller('student')
 export class StudentController {
@@ -63,5 +65,13 @@ export class StudentController {
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
     }
+  }
+
+  @Get('students-with-course/:courseId')
+  async findStudentsWithCourse(
+    @Param('courseId') courseId: string,
+    @CurrentUser() user: User,
+  ): Promise<Student[]> {
+    return await this.studentService.findStudentsWithCourse(user, courseId)
   }
 }

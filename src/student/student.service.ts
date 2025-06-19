@@ -3,6 +3,7 @@ import { CreateStudentDto } from './dto/create-student.dto'
 import { UpdateStudentDto } from './dto/update-student.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { Student } from 'generated/prisma'
+import { User } from 'src/users/entities/user.entity'
 
 @Injectable()
 export class StudentService {
@@ -68,6 +69,19 @@ export class StudentService {
       },
       include: {
         course: true,
+      },
+    })
+  }
+
+  findStudentsWithCourse(user: User, courseId: string): Promise<Student[]> {
+    return this.prisma.student.findMany({
+      where: {
+        course: {
+          some: {
+            id: courseId,
+            teacherId: user.id,
+          },
+        },
       },
     })
   }
