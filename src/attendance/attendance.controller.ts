@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -9,20 +8,12 @@ import {
   Query,
 } from '@nestjs/common'
 import { AttendanceService } from './attendance.service'
-import { CreateAttendanceDto } from './dto/create-attendance.dto'
-import { UpdateAttendanceDto } from './dto/update-attendance.dto'
 import { Attendance, Student } from 'generated/prisma'
+import { CreateAttendanceDto } from './dto/create-attendance.dto'
 
 @Controller('attendance')
 export class AttendanceController {
   constructor(private readonly attendanceService: AttendanceService) {}
-
-  @Post()
-  async create(
-    @Body() createAttendanceDto: CreateAttendanceDto,
-  ): Promise<Attendance> {
-    return await this.attendanceService.create(createAttendanceDto)
-  }
 
   @Get()
   async findAll(): Promise<Attendance[]> {
@@ -41,12 +32,11 @@ export class AttendanceController {
     return await this.attendanceService.findByStudentId(studentId)
   }
 
-  @Patch(':id')
+  @Patch()
   async update(
-    @Param('id') id: string,
-    @Body() updateAttendanceDto: UpdateAttendanceDto,
-  ): Promise<Attendance> {
-    return await this.attendanceService.update(id, updateAttendanceDto)
+    @Body() createAttendanceDto: CreateAttendanceDto,
+  ): Promise<Attendance[]> {
+    return await this.attendanceService.update(createAttendanceDto)
   }
 
   @Delete(':id')

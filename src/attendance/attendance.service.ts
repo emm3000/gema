@@ -1,23 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { CreateAttendanceDto } from './dto/create-attendance.dto'
-import { UpdateAttendanceDto } from './dto/update-attendance.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { Attendance, AttendanceStatus, Student } from 'generated/prisma'
 
 @Injectable()
 export class AttendanceService {
   constructor(private readonly prisma: PrismaService) {}
-
-  create(createAttendanceDto: CreateAttendanceDto): Promise<Attendance> {
-    return this.prisma.attendance.create({
-      data: {
-        date: new Date(createAttendanceDto.date),
-        status: this.parseRoleOrThrow(createAttendanceDto.status),
-        studentId: createAttendanceDto.studentId,
-        courseId: createAttendanceDto.courseId,
-      },
-    })
-  }
 
   private parseRoleOrThrow(value: string): AttendanceStatus {
     if (Object.values(AttendanceStatus).includes(value as AttendanceStatus)) {
@@ -38,19 +26,29 @@ export class AttendanceService {
     return this.prisma.attendance.findMany({ where: { studentId } })
   }
 
-  update(
-    id: string,
-    updateAttendanceDto: UpdateAttendanceDto,
-  ): Promise<Attendance> {
-    return this.prisma.attendance.update({
-      where: { id },
-      data: {
-        date: new Date(updateAttendanceDto.date),
-        status: this.parseRoleOrThrow(updateAttendanceDto.status),
-        studentId: updateAttendanceDto.studentId,
-        courseId: updateAttendanceDto.courseId,
-      },
-    })
+  update(updateAttendanceDto: CreateAttendanceDto): Promise<Attendance[]> {
+    return this.prisma.$transaction(
+      updateAttendanceDto.students.map((attendance) =>
+        this.prisma.attendance.upsert({
+          where: {
+            date_studentId_courseId: {
+              studentId: attendance.studentId,
+              courseId: updateAttendanceDto.courseId,
+              date: new Date(updateAttendanceDto.date),
+            },
+          },
+          create: {
+            date: new Date(updateAttendanceDto.date),
+            status: this.parseRoleOrThrow(attendance.status),
+            studentId: attendance.studentId,
+            courseId: updateAttendanceDto.courseId,
+          },
+          update: {
+            status: this.parseRoleOrThrow(attendance.status),
+          },
+        }),
+      ),
+    )
   }
 
   remove(id: string): Promise<Attendance> {
