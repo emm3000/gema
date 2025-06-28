@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common'
+import { Controller, Post, Body, Get, Query } from '@nestjs/common'
 import { HelloService } from './hello.service'
 import { CreateHelloDto } from './dto/create-hello.dto'
 import { Public } from 'src/auth/public.decorator'
@@ -11,5 +11,10 @@ export class HelloController {
   @Post()
   async create(@Body() createHelloDto: CreateHelloDto) {
     return await this.helloService.create(createHelloDto)
+  }
+
+  @Get()
+  async fetchAll() {
+    return await this.helloService.fetchAll()
   }
 }

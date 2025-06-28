@@ -12,6 +12,20 @@ import { PrismaService } from 'src/prisma/prisma.service'
 export class HelloService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async fetchAll() {
+    const decks = await this.prisma.deck.findMany()
+    const flashcards = await this.prisma.flashcard.findMany()
+    const flashcardExamples = await this.prisma.flashcardExample.findMany()
+    const quotes = await this.prisma.quote.findMany()
+
+    return {
+      decks,
+      flashcards,
+      flashcardExamples,
+      quotes,
+    }
+  }
+
   async create(createHelloDto: CreateHelloDto) {
     const { decks, flashcards, flashcardExamples, quotes, androidId } =
       createHelloDto

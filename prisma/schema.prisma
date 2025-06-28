@@ -134,7 +134,7 @@ model FlashcardExample {
 }
 
 model Quote {
-  id            String @id
+  id            String  @id
   title         String
   phrase        String
   description   String
@@ -144,6 +144,7 @@ model Quote {
   pronunciation String
   formality     String
   tags          String
+  category      String?
   androidId     String
   createdAt     BigInt
 }
