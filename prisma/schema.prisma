@@ -93,3 +93,57 @@ model Grade {
   student      Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
   evaluation   Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
 }
+
+// Another backend
+
+model Deck {
+  id          String      @id
+  name        String
+  description String
+  createdAt   BigInt
+  androidId   String
+  Flashcard   Flashcard[]
+}
+
+model Flashcard {
+  id          String @id
+  word        String
+  meaning     String
+  translation String
+  phonetic    String
+  audioPath   String
+  imagePath   String
+  note        String
+  createdAt   BigInt
+  isGenerated Int
+  deckId      String
+  androidId   String
+  deck        Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  FlashcardExample FlashcardExample[]
+}
+
+model FlashcardExample {
+  id          String    @id
+  text        String
+  translation String
+  type        String
+  flashcardId String
+  androidId   String
+  flashcard   Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+}
+
+model Quote {
+  id            String @id
+  title         String
+  phrase        String
+  description   String
+  translation   String
+  example       String
+  context       String
+  pronunciation String
+  formality     String
+  tags          String
+  androidId     String
+  createdAt     BigInt
+}

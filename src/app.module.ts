@@ -10,6 +10,7 @@ import { JwtGuard } from './auth/jwt.guard'
 import { CourseModule } from './course/course.module'
 import { StudentModule } from './student/student.module'
 import { AttendanceModule } from './attendance/attendance.module'
+import { HelloModule } from './hello/hello.module'
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AttendanceModule } from './attendance/attendance.module'
     CourseModule,
     StudentModule,
     AttendanceModule,
+    HelloModule,
   ],
   controllers: [AppController],
   providers: [
