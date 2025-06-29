@@ -10,7 +10,7 @@ export class DeckDto {
   readonly deckId: string
   readonly name: string
   readonly description: string
-  readonly createdAt: number
+  readonly createdAt: string
 }
 
 export class FlashcardDto {
@@ -22,7 +22,7 @@ export class FlashcardDto {
   readonly audioPath: string
   readonly imagePath: string
   readonly note: string
-  readonly createdAt: number
+  readonly createdAt: string
   readonly isGenerated: number
   readonly deckId: string
 }
@@ -46,5 +46,5 @@ export class QuoteDto {
   readonly pronunciation: string
   readonly formality: string
   readonly tags: string
-  readonly createdAt: number
+  readonly createdAt: string
 }

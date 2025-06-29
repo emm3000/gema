@@ -100,7 +100,7 @@ model Deck {
   id          String      @id
   name        String
   description String
-  createdAt   BigInt
+  createdAt   String
   androidId   String
   Flashcard   Flashcard[]
 }
@@ -114,7 +114,7 @@ model Flashcard {
   audioPath   String
   imagePath   String
   note        String
-  createdAt   BigInt
+  createdAt   String
   isGenerated Int
   deckId      String
   androidId   String
@@ -146,5 +146,5 @@ model Quote {
   tags          String
   category      String?
   androidId     String
-  createdAt     BigInt
+  createdAt     String
 }
