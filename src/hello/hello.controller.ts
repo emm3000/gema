@@ -10,7 +10,10 @@ export class HelloController {
 
   @Post()
   async create(@Body() createHelloDto: CreateHelloDto) {
-    return await this.helloService.create(createHelloDto)
+    console.log('createHelloDto', 'entrmos')
+    const result = await this.helloService.create(createHelloDto)
+    console.log('result', result)
+    return result
   }
 
   @Get()

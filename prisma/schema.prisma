@@ -101,12 +101,13 @@ model Deck {
   name        String
   description String
   createdAt   String
+  updatedAt   String?
   androidId   String
   Flashcard   Flashcard[]
 }
 
 model Flashcard {
-  id          String @id
+  id          String  @id
   word        String
   meaning     String
   translation String
@@ -115,10 +116,11 @@ model Flashcard {
   imagePath   String
   note        String
   createdAt   String
+  updatedAt   String?
   isGenerated Int
   deckId      String
   androidId   String
-  deck        Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  deck        Deck    @relation(fields: [deckId], references: [id], onDelete: Cascade)
 
   FlashcardExample FlashcardExample[]
 }
@@ -130,6 +132,8 @@ model FlashcardExample {
   type        String
   flashcardId String
   androidId   String
+  createdAt   String?
+  updatedAt   String?
   flashcard   Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
 }
 
@@ -147,4 +151,5 @@ model Quote {
   category      String?
   androidId     String
   createdAt     String
+  updatedAt     String?
 }

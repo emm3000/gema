@@ -11,6 +11,7 @@ export class DeckDto {
   readonly name: string
   readonly description: string
   readonly createdAt: string
+  readonly updatedAt: string
 }
 
 export class FlashcardDto {
@@ -25,6 +26,7 @@ export class FlashcardDto {
   readonly createdAt: string
   readonly isGenerated: number
   readonly deckId: string
+  readonly updatedAt: string
 }
 
 export class FlashcardExampleDto {
@@ -33,6 +35,8 @@ export class FlashcardExampleDto {
   readonly translation: string
   readonly type: string
   readonly flashcardId: string
+  readonly createdAt: string
+  readonly updatedAt: string
 }
 
 export class QuoteDto {
@@ -47,4 +51,5 @@ export class QuoteDto {
   readonly formality: string
   readonly tags: string
   readonly createdAt: string
+  readonly updatedAt: string
 }
