@@ -4,6 +4,7 @@ export class CreateHelloDto {
   readonly flashcards: FlashcardDto[]
   readonly flashcardExamples: FlashcardExampleDto[]
   readonly quotes: QuoteDto[]
+  readonly flashcardReviews: FlashcardReviewDto[]
 }
 
 export class DeckDto {
@@ -50,6 +51,18 @@ export class QuoteDto {
   readonly pronunciation: string
   readonly formality: string
   readonly tags: string
+  readonly createdAt: string
+  readonly updatedAt: string
+}
+
+export class FlashcardReviewDto {
+  readonly flashcardId: string
+  readonly lastReviewedAt: number
+  readonly nextReviewAt: number
+  readonly easeFactor: number
+  readonly interval: number
+  readonly repetitions: number
+  readonly lapses: number
   readonly createdAt: string
   readonly updatedAt: string
 }

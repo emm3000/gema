@@ -123,6 +123,7 @@ model Flashcard {
   deck        Deck    @relation(fields: [deckId], references: [id], onDelete: Cascade)
 
   FlashcardExample FlashcardExample[]
+  FlashcardReview  FlashcardReview?
 }
 
 model FlashcardExample {
@@ -152,4 +153,18 @@ model Quote {
   androidId     String
   createdAt     String
   updatedAt     String?
+}
+
+model FlashcardReview {
+  flashcardId    String  @id
+  lastReviewedAt Int?
+  nextReviewAt   Int?
+  easeFactor     Decimal
+  interval       Int
+  repetitions    Int
+  lapses         Int
+  createdAt      String
+  updatedAt      String
+
+  flashcard Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
 }

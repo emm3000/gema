@@ -4,6 +4,7 @@ import {
   DeckDto,
   FlashcardDto,
   FlashcardExampleDto,
+  FlashcardReviewDto,
   QuoteDto,
 } from './dto/create-hello.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
@@ -17,18 +18,26 @@ export class HelloService {
     const flashcards = await this.prisma.flashcard.findMany()
     const flashcardExamples = await this.prisma.flashcardExample.findMany()
     const quotes = await this.prisma.quote.findMany()
+    const flashcardReviews = await this.prisma.flashcardReview.findMany()
 
     return {
       decks,
       flashcards,
       flashcardExamples,
       quotes,
+      flashcardReviews,
     }
   }
 
   async create(createHelloDto: CreateHelloDto) {
-    const { decks, flashcards, flashcardExamples, quotes, androidId } =
-      createHelloDto
+    const {
+      decks,
+      flashcards,
+      flashcardExamples,
+      quotes,
+      androidId,
+      flashcardReviews,
+    } = createHelloDto
 
     const errors: { type: string; reason: string }[] = []
 
@@ -37,6 +46,7 @@ export class HelloService {
       flashcards: flashcards.length,
       examples: flashcardExamples.length,
       quotes: quotes.length,
+      flashcardReviews: flashcardReviews.length,
     }
 
     try {
@@ -64,6 +74,12 @@ export class HelloService {
         errors.push({ type: 'quote', reason: err.message })
       }
 
+      try {
+        await this.syncFlashcardReviews(flashcardReviews)
+      } catch (err) {
+        errors.push({ type: 'flashcardReview', reason: err.message })
+      }
+
       return {
         success: errors.length === 0,
         message:
@@ -83,6 +99,42 @@ export class HelloService {
         HttpStatus.BAD_REQUEST,
       )
     }
+  }
+
+  private async syncFlashcardReviews(
+    flashcardReviewsDto: FlashcardReviewDto[],
+  ) {
+    return this.prisma.$transaction(
+      flashcardReviewsDto.map((flashcardReviewDto) => {
+        return this.prisma.flashcardReview.upsert({
+          where: {
+            flashcardId: flashcardReviewDto.flashcardId,
+          },
+          create: {
+            flashcardId: flashcardReviewDto.flashcardId,
+            lastReviewedAt: flashcardReviewDto.lastReviewedAt,
+            nextReviewAt: flashcardReviewDto.nextReviewAt,
+            easeFactor: flashcardReviewDto.easeFactor,
+            interval: flashcardReviewDto.interval,
+            repetitions: flashcardReviewDto.repetitions,
+            lapses: flashcardReviewDto.lapses,
+            createdAt: flashcardReviewDto.createdAt,
+            updatedAt: flashcardReviewDto.updatedAt,
+          },
+          update: {
+            flashcardId: flashcardReviewDto.flashcardId,
+            lastReviewedAt: flashcardReviewDto.lastReviewedAt,
+            nextReviewAt: flashcardReviewDto.nextReviewAt,
+            easeFactor: flashcardReviewDto.easeFactor,
+            interval: flashcardReviewDto.interval,
+            repetitions: flashcardReviewDto.repetitions,
+            lapses: flashcardReviewDto.lapses,
+            createdAt: flashcardReviewDto.createdAt,
+            updatedAt: flashcardReviewDto.updatedAt,
+          },
+        })
+      }),
+    )
   }
 
   private async syncDecks(decksDto: DeckDto[], androidId: string) {
