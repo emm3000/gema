@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "FlashcardReview" ALTER COLUMN "nextReviewAt" SET DATA TYPE BIGINT,
+ALTER COLUMN "lastReviewedAt" SET DATA TYPE BIGINT;

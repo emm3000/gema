@@ -62,6 +62,6 @@ export class FlashcardReviewDto {
   readonly interval: number
   readonly repetitions: number
   readonly lapses: number
-  readonly createdAt: string
-  readonly updatedAt: string
+  readonly createdAt: number
+  readonly updatedAt: number
 }

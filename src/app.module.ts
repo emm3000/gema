@@ -14,6 +14,7 @@ import { HelloModule } from './hello/hello.module'
 import { DecksModule } from './decks/decks.module'
 import { FlashcardsModule } from './flashcards/flashcards.module';
 import { ExamplesModule } from './examples/examples.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ExamplesModule } from './examples/examples.module';
     DecksModule,
     FlashcardsModule,
     ExamplesModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [

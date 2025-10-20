@@ -150,14 +150,14 @@ model Quote {
 
 model FlashcardReview {
   flashcardId    String  @id
-  lastReviewedAt Int?
-  nextReviewAt   Int?
+  lastReviewedAt BigInt
+  nextReviewAt   BigInt
   easeFactor     Decimal
   interval       Int
   repetitions    Int
   lapses         Int
-  createdAt      String
-  updatedAt      String
+  createdAt      BigInt
+  updatedAt      BigInt
 
   flashcard Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
 }
