@@ -11,6 +11,7 @@ import { CourseModule } from './course/course.module'
 import { StudentModule } from './student/student.module'
 import { AttendanceModule } from './attendance/attendance.module'
 import { HelloModule } from './hello/hello.module'
+import { DecksModule } from './decks/decks.module'
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { HelloModule } from './hello/hello.module'
     StudentModule,
     AttendanceModule,
     HelloModule,
+    DecksModule,
   ],
   controllers: [AppController],
   providers: [

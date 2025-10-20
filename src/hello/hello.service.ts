@@ -51,7 +51,7 @@ export class HelloService {
 
     try {
       try {
-        await this.syncDecks(decks, androidId)
+        await this.syncDecks(decks)
       } catch (err) {
         errors.push({ type: 'deck', reason: err.message })
       }
@@ -137,7 +137,7 @@ export class HelloService {
     )
   }
 
-  private async syncDecks(decksDto: DeckDto[], androidId: string) {
+  private async syncDecks(decksDto: DeckDto[]) {
     return this.prisma.$transaction(
       decksDto.map((deckDto) => {
         return this.prisma.deck.upsert({
@@ -149,13 +149,13 @@ export class HelloService {
             name: deckDto.name,
             description: deckDto.description,
             createdAt: deckDto.createdAt,
-            androidId,
+            updatedAt: deckDto.updatedAt,
           },
           update: {
             name: deckDto.name,
             description: deckDto.description,
             createdAt: deckDto.createdAt,
-            androidId,
+            updatedAt: deckDto.updatedAt,
           },
         })
       }),

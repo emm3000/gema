@@ -11,8 +11,8 @@ export class DeckDto {
   readonly deckId: string
   readonly name: string
   readonly description: string
-  readonly createdAt: string
-  readonly updatedAt: string
+  readonly createdAt: number
+  readonly updatedAt: number
 }
 
 export class FlashcardDto {
