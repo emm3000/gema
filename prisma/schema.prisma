@@ -106,20 +106,16 @@ model Deck {
 }
 
 model Flashcard {
-  id          String  @id
+  id          String @id
   word        String
   meaning     String
   translation String
   phonetic    String
-  audioPath   String
-  imagePath   String
   note        String
   createdAt   String
-  updatedAt   String?
-  isGenerated Int
+  updatedAt   String
   deckId      String
-  androidId   String
-  deck        Deck    @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  deck        Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
 
   FlashcardExample FlashcardExample[]
   FlashcardReview  FlashcardReview?
@@ -131,9 +127,8 @@ model FlashcardExample {
   translation String
   type        String
   flashcardId String
-  androidId   String
-  createdAt   String?
-  updatedAt   String?
+  createdAt   String
+  updatedAt   String
   flashcard   Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
 }
 
