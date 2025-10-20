@@ -12,9 +12,10 @@ import { StudentModule } from './student/student.module'
 import { AttendanceModule } from './attendance/attendance.module'
 import { HelloModule } from './hello/hello.module'
 import { DecksModule } from './decks/decks.module'
-import { FlashcardsModule } from './flashcards/flashcards.module';
-import { ExamplesModule } from './examples/examples.module';
-import { ReviewsModule } from './reviews/reviews.module';
+import { FlashcardsModule } from './flashcards/flashcards.module'
+import { ExamplesModule } from './examples/examples.module'
+import { ReviewsModule } from './reviews/reviews.module'
+import { ExportsModule } from './exports/exports.module'
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     FlashcardsModule,
     ExamplesModule,
     ReviewsModule,
+    ExportsModule,
   ],
   controllers: [AppController],
   providers: [
