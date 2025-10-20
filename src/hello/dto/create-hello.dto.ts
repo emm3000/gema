@@ -24,10 +24,9 @@ export class FlashcardDto {
   readonly audioPath: string
   readonly imagePath: string
   readonly note: string
-  readonly createdAt: string
-  readonly isGenerated: number
+  readonly createdAt: number
   readonly deckId: string
-  readonly updatedAt: string
+  readonly updatedAt: number
 }
 
 export class FlashcardExampleDto {
@@ -36,8 +35,8 @@ export class FlashcardExampleDto {
   readonly translation: string
   readonly type: string
   readonly flashcardId: string
-  readonly createdAt: string
-  readonly updatedAt: string
+  readonly createdAt: number
+  readonly updatedAt: number
 }
 
 export class QuoteDto {

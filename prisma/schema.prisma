@@ -112,8 +112,8 @@ model Flashcard {
   translation String
   phonetic    String
   note        String
-  createdAt   String
-  updatedAt   String
+  createdAt   BigInt
+  updatedAt   BigInt
   deckId      String
   deck        Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
 
@@ -127,8 +127,8 @@ model FlashcardExample {
   translation String
   type        String
   flashcardId String
-  createdAt   String
-  updatedAt   String
+  createdAt   BigInt
+  updatedAt   BigInt
   flashcard   Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
 }
 
@@ -144,7 +144,6 @@ model Quote {
   formality     String
   tags          String
   category      String?
-  androidId     String
   createdAt     String
   updatedAt     String?
 }

@@ -12,6 +12,8 @@ import { StudentModule } from './student/student.module'
 import { AttendanceModule } from './attendance/attendance.module'
 import { HelloModule } from './hello/hello.module'
 import { DecksModule } from './decks/decks.module'
+import { FlashcardsModule } from './flashcards/flashcards.module';
+import { ExamplesModule } from './examples/examples.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { DecksModule } from './decks/decks.module'
     AttendanceModule,
     HelloModule,
     DecksModule,
+    FlashcardsModule,
+    ExamplesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -57,19 +57,19 @@ export class HelloService {
       }
 
       try {
-        await this.syncFlashcards(flashcards, androidId)
+        await this.syncFlashcards(flashcards)
       } catch (err) {
         errors.push({ type: 'flashcard', reason: err.message })
       }
 
       try {
-        await this.syncFlashcardExamples(flashcardExamples, androidId)
+        await this.syncFlashcardExamples(flashcardExamples)
       } catch (err) {
         errors.push({ type: 'example', reason: err.message })
       }
 
       try {
-        await this.syncQuotes(quotes, androidId)
+        await this.syncQuotes(quotes)
       } catch (err) {
         errors.push({ type: 'quote', reason: err.message })
       }
@@ -162,10 +162,7 @@ export class HelloService {
     )
   }
 
-  private async syncFlashcards(
-    flashcardsDto: FlashcardDto[],
-    androidId: string,
-  ) {
+  private async syncFlashcards(flashcardsDto: FlashcardDto[]) {
     return this.prisma.$transaction(
       flashcardsDto.map((flashcardDto) => {
         return this.prisma.flashcard.upsert({
@@ -178,26 +175,19 @@ export class HelloService {
             meaning: flashcardDto.meaning,
             translation: flashcardDto.translation,
             phonetic: flashcardDto.phonetic,
-            audioPath: flashcardDto.audioPath,
-            imagePath: flashcardDto.imagePath,
             note: flashcardDto.note,
             createdAt: flashcardDto.createdAt,
-            isGenerated: flashcardDto.isGenerated,
+            updatedAt: flashcardDto.updatedAt,
             deckId: flashcardDto.deckId,
-            androidId,
           },
           update: {
             word: flashcardDto.word,
             meaning: flashcardDto.meaning,
             translation: flashcardDto.translation,
             phonetic: flashcardDto.phonetic,
-            audioPath: flashcardDto.audioPath,
-            imagePath: flashcardDto.imagePath,
             note: flashcardDto.note,
             createdAt: flashcardDto.createdAt,
-            isGenerated: flashcardDto.isGenerated,
             deckId: flashcardDto.deckId,
-            androidId,
           },
         })
       }),
@@ -206,7 +196,6 @@ export class HelloService {
 
   private async syncFlashcardExamples(
     flashcardExamplesDto: FlashcardExampleDto[],
-    androidId: string,
   ) {
     return this.prisma.$transaction(
       flashcardExamplesDto.map((flashcardExampleDto) => {
@@ -220,21 +209,23 @@ export class HelloService {
             translation: flashcardExampleDto.translation,
             type: flashcardExampleDto.type,
             flashcardId: flashcardExampleDto.flashcardId,
-            androidId,
+            createdAt: flashcardExampleDto.createdAt,
+            updatedAt: flashcardExampleDto.updatedAt,
           },
           update: {
             text: flashcardExampleDto.text,
             translation: flashcardExampleDto.translation,
             type: flashcardExampleDto.type,
             flashcardId: flashcardExampleDto.flashcardId,
-            androidId,
+            createdAt: flashcardExampleDto.createdAt,
+            updatedAt: flashcardExampleDto.updatedAt,
           },
         })
       }),
     )
   }
 
-  private async syncQuotes(quotesDto: QuoteDto[], androidId: string) {
+  private async syncQuotes(quotesDto: QuoteDto[]) {
     return this.prisma.$transaction(
       quotesDto.map((quoteDto) => {
         return this.prisma.quote.upsert({
@@ -253,7 +244,7 @@ export class HelloService {
             formality: quoteDto.formality,
             tags: quoteDto.tags,
             createdAt: quoteDto.createdAt,
-            androidId,
+            updatedAt: quoteDto.updatedAt,
           },
           update: {
             title: quoteDto.title,
@@ -266,7 +257,7 @@ export class HelloService {
             formality: quoteDto.formality,
             tags: quoteDto.tags,
             createdAt: quoteDto.createdAt,
-            androidId,
+            updatedAt: quoteDto.updatedAt,
           },
         })
       }),
