@@ -23,8 +23,9 @@ export class ExamplesController {
   }
 
   @Post('all')
-  createAll(@Body() createExampleDto: CreateExampleDto[]) {
-    return this.examplesService.createAll(createExampleDto)
+  async createAll(@Body() createExampleDto: CreateExampleDto[]) {
+    await this.examplesService.createAll(createExampleDto)
+    return { message: 'Examples created successfully' }
   }
 
   @Get()

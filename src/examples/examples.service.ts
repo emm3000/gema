@@ -12,7 +12,33 @@ export class ExamplesService {
   }
 
   createAll(createExampleDto: CreateExampleDto[]) {
-    return this.prisma.flashcardExample.createMany({ data: createExampleDto })
+    return this.prisma.$transaction(
+      createExampleDto.map((example) =>
+        this.prisma.flashcardExample.upsert({
+          where: {
+            id: example.id,
+          },
+          create: {
+            id: example.id,
+            flashcardId: example.flashcardId,
+            text: example.text,
+            translation: example.translation,
+            type: example.type,
+            createdAt: example.createdAt,
+            updatedAt: example.updatedAt,
+          },
+          update: {
+            id: example.id,
+            flashcardId: example.flashcardId,
+            text: example.text,
+            translation: example.translation,
+            type: example.type,
+            createdAt: example.createdAt,
+            updatedAt: example.updatedAt,
+          },
+        }),
+      ),
+    )
   }
 
   findAll() {
