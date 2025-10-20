@@ -16,6 +16,7 @@ import { FlashcardsModule } from './flashcards/flashcards.module'
 import { ExamplesModule } from './examples/examples.module'
 import { ReviewsModule } from './reviews/reviews.module'
 import { ExportsModule } from './exports/exports.module'
+import { QuotesModule } from './quotes/quotes.module'
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ExportsModule } from './exports/exports.module'
     ExamplesModule,
     ReviewsModule,
     ExportsModule,
+    QuotesModule,
   ],
   controllers: [AppController],
   providers: [

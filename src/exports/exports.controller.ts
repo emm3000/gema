@@ -83,10 +83,30 @@ export class ExportsController {
         updatedAt: Number(review.updatedAt),
       }),
     )
+    const quotesStream = createChunkedJsonStream(
+      (offset, limit) => this.exportsService.findQuotes(offset, limit),
+      100,
+      (quote) => ({
+        id: quote.id,
+        title: quote.title,
+        phrase: quote.phrase,
+        description: quote.description,
+        translation: quote.translation,
+        example: quote.example,
+        context: quote.context,
+        pronunciation: quote.pronunciation,
+        formality: quote.formality,
+        tags: quote.tags,
+        category: quote.category,
+        createdAt: Number(quote.createdAt),
+        updatedAt: Number(quote.updatedAt),
+      }),
+    )
     archive.append(decksStream, { name: 'decks.json' })
     archive.append(flashcard, { name: 'flashcards.json' })
     archive.append(examplesStream, { name: 'examples.json' })
     archive.append(reviewsStream, { name: 'reviews.json' })
+    archive.append(quotesStream, { name: 'quotes.json' })
     await archive.finalize()
   }
 }

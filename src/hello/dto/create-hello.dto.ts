@@ -50,8 +50,8 @@ export class QuoteDto {
   readonly pronunciation: string
   readonly formality: string
   readonly tags: string
-  readonly createdAt: string
-  readonly updatedAt: string
+  readonly createdAt: number
+  readonly updatedAt: number
 }
 
 export class FlashcardReviewDto {

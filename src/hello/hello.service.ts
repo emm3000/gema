@@ -243,6 +243,7 @@ export class HelloService {
             pronunciation: quoteDto.pronunciation,
             formality: quoteDto.formality,
             tags: quoteDto.tags,
+            category: '',
             createdAt: quoteDto.createdAt,
             updatedAt: quoteDto.updatedAt,
           },
